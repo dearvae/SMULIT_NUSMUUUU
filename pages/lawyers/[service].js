@@ -1,4 +1,4 @@
-import MyLayout from '../../../component/global/layout'
+import MyLayout from '../../component/global/layout'
 
 export default function Service() {
   return (
