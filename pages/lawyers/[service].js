@@ -3,8 +3,7 @@ import MyLayout from '../../component/global/layout'
 export default function Service() {
   return (
     <>
-    {/* <Navigation /> */}
-    <div style={{paddingTop:"90px"}}>
+    {/* <div style={{paddingTop:"90px"}}>
     <Row gutter={[8, 8]}>
    <Col span={8} >
        <MyCard title="title1" description="hi"/>
@@ -13,11 +12,11 @@ export default function Service() {
        <MyCard title="title2" description="hi"/>
      </Col>  <Col span={8} >
        <MyCard title="title3" description="hi"/>
-     </Col>
+     </Col> */}
  
-   </Row>
+   {/* </Row>
    </div>
-   <div>test</div>
+   <div>test</div> */}
     </>
   )
 }
