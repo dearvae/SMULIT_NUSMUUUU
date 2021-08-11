@@ -1,9 +1,30 @@
 import Link from 'next/link'
 import React, { useState } from 'react';
-import { Row, Col, Button, Select, Cascader, Form, Input, DatePicker,PageHeader,Steps} from 'antd';
+import { Row, Col, notification, Button, Select, Cascader, Form, Input, DatePicker,PageHeader,Steps,Upload, message } from 'antd';
 import 'antd/dist/antd.css';
-import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined,ApartmentOutlined } from '@ant-design/icons';
+import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined,ApartmentOutlined,InboxOutlined } from '@ant-design/icons';
 
+const { Dragger } = Upload;
+
+const props = {
+  name: 'file',
+  multiple: true,
+  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
+  onChange(info) {
+    const { status } = info.file;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      message.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      message.error(`${info.file.name} file upload failed.`);
+    }
+  },
+  onDrop(e) {
+    console.log('Dropped files', e.dataTransfer.files);
+  },
+};
 
 const { Step } = Steps;
 
@@ -146,6 +167,16 @@ const locations = [
   },
 ];
 
+
+const openNotificationWithIcon = type => {
+  notification[type]({
+    message: 'Registered Successfully',
+    description:
+      'Welcome to volunteer lawyer platform, we hope you enjoy our platform!',
+  });
+};
+
+
 export default function Register() {
 
   const [form] = Form.useForm();
@@ -210,98 +241,22 @@ export default function Register() {
                 <Row>
                 <Col span={20}  style={{margin:"auto auto", paddingBottom:"20px",textAlign:"center"}}>
                 <Steps>
-                  <Step status="process" title="Register" icon={<LoadingOutlined />} />
-                  <Step status="wait" title="ID Verification" icon={<SolutionOutlined />} />
+                  <Step status="finish" title="Register" icon={<UserOutlined />} />
+                  <Step status="process" title="ID Verification" icon={<LoadingOutlined />} />
                   <Step status="wait" title="Done" icon={<SmileOutlined />} />
                 </Steps>
                 </Col>
                 </Row>
-                
-              <Row>
-                <Col span={20} >
-                  <Form.Item 
-                      label="First Name"
-                      name="firstname"
-                      rules={[{required: true,
-                              message: 'Please input your first name!',},
-                          ]} >
-                      <Input />
-                  </Form.Item>
-                </Col>
-                <Col span={20}>
-                  <Form.Item 
-                        label="Middle Name"
-                        name="middlename"
-                        >
-                    <Input />
-                    </Form.Item>
-                </Col>
-                <Col span={20}>
-                  <Form.Item 
-                        label="Last Name"
-                        name="lastname"
-                        rules={[
-                            {required: true,
-                                message: 'Please input your last name!',},
-                            ]}
-                        >
-                    <Input />
-                    </Form.Item>
-                </Col>
-              </Row>
+            
 
-                <Row>
-                  <Col span={20}>
-                    <Form.Item label="Birth Date">
-                    <DatePicker />
-                    </Form.Item>
-                  </Col>
-
-                  <Col span={20}>
-                  <Form.Item
-                      name="phone"
-                      label="Phone Number"
-                      rules={[
-                        {
-                          required: true,
-                          message: 'Please input your phone number!',
-                        },
-                      ]}
-                    >
-                      <Input
-                        addonBefore={prefixSelector}
-                        style={{
-                          width: '100%',
-                        }}
-                      />
-                    </Form.Item>
-
-                  </Col>
-
-                  <Col span={20}>
-                  <Form.Item label="Gender">
-                    <Select>
-                        <Select.Option value="Male">Male</Select.Option>
-                        <Select.Option value="Female">Female</Select.Option>
-                        <Select.Option value="Prefer not to say">Prefer not to say</Select.Option>
-                    </Select>
-                  </Form.Item>
-                  </Col>
-
-                </Row>
-                
                 <Col span="20">
                 <Form.Item 
-                    label="Email Address"
-                    name="email"
+                    label="Law Firm Name"
+                    name="lawfirmname"
                     rules={[
                       {
-                        type: 'email',
-                        message: 'The input is not valid E-mail!',
-                      },
-                      {
                         required: true,
-                        message: 'Please input your E-mail!',
+                        message: 'Please input your Law Firm Name!',
                       },
                     ]}
                         >
@@ -309,35 +264,66 @@ export default function Register() {
                 </Form.Item>
                 </Col>
 
-                <Col span="20">
-                    <Form.Item
-                        label="Password"
-                        name="password"
-                        rules={[
+                <Row>
+                  <Col span="20" style={{textAlign:"left", marginLight:"100px"}}>
+                      <Form.Item
+                      name="location"
+                      label="Law Clinic Location "
+                      rules={[
                         {
-                            required: true,
-                            message: 'Please input your password!',
+                          type: 'array',
+                          required: true,
+                          message: 'Please select your clinic location!',
                         },
-                        ]}
+                      ]}
                     >
-                        <Input.Password />
+                      <Cascader options={locations} />
                     </Form.Item>
-                </Col>
+
+                  </Col>
+                </Row>
 
                 <Col span="20">
-                <Form.Item
-                      label="Confirm Password"
-                      name="confirmPassword"
-                      rules={[
+                <Form.Item 
+                    label="Position"
+                    name="position"
+                    rules={[
                       {
-                          required: true,
-                          message: 'Please input your password again!',
+                        required: true,
+                        message: 'Please input your Position!',
                       },
-                      ]}
-                  >
-                    <Input.Password />
+                    ]}
+                        >
+                <Input />
                 </Form.Item>
                 </Col>
+
+                <Row>
+    
+
+                <Col span="20">
+                <Form.Item 
+                    label="Practicing Certificate"
+                    name="practicingcertificate"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your Position!',
+                      },
+                    ]}>
+                    <Dragger {...props}>
+                    <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                    </p>
+                    <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                    <p className="ant-upload-hint">
+                    Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+                    band files
+                    </p>
+                    </Dragger>
+                </Form.Item>
+                </Col>
+                </Row>
 
                 <Form.Item
                     wrapperCol={{
@@ -354,12 +340,13 @@ export default function Register() {
                     <Button 
                     htmlType="submit" 
                     shape="round"
-                    style={{marginTop:"5px", width:"200px", height:"40px",fontSize:"20px", 
+                    style={{marginTop:"20px", width:"200px", height:"40px",fontSize:"20px", 
                     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                     borderColor:"#f4801b",backgroundColor:"#f4801b",color:"white"}}
+                    onClick={() => openNotificationWithIcon('success')}
                     >
-                         <Link href="/lawyer/registerIdVerification">
-                        <a>next</a>
+                         <Link href="/lawyer/">
+                        <a>Submit</a>
                         </Link>
                     </Button>
                     </Form.Item>
