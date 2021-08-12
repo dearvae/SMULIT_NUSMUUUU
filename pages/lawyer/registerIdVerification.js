@@ -87,97 +87,10 @@ const locations = [
       },
     ],
   },
-  {
-    value: 'malaysia',
-    label: 'Malaysia',
-    children: [
-      {
-        value: 'westMalaysia ',
-        label: 'West Malaysia ',
-        children: [
-          {
-            value: 'kualaLumpur',
-            label: 'Kuala Lumpur',
-          },
-          {
-            value: 'putrajaya',
-            label: 'putrajaya',
-          },
-          {
-            value: 'johor',
-            label: 'Johor',
-          },
-          {
-            value: 'kedah',
-            label: 'Kedah',
-          },
-          {
-            value: 'kelanta',
-            label: 'kelantan',
-          },
-          {
-            value: 'melaka',
-            label: 'Melaka',
-          },
-          {
-            value: 'negeriSembilan',
-            label: 'Negeri Sembilan',
-          },
-        ],
-      },
-      {
-        value: 'eastMalaysia ',
-        label: 'East Malaysia ',
-        children: [
-          {
-            value: 'labuan',
-            label: 'Labuan',
-          },
-          {
-            value: 'sabah',
-            label: 'Sabah',
-          },
-          {
-            value: 'sarawak',
-            label: 'Sarawak',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'indonesia',
-    label: 'Indonesia',
-  },
-  {
-    value: 'thailand',
-    label: 'Thailand',
-  },
-  {
-    value: 'vietnam',
-    label: 'Vietnam',
-  },
-  {
-    value: 'myanmar',
-    label: 'Myanmar',
-  },
-  {
-    value: 'philippines',
-    label: 'Philippines',
-  },
 ];
 
 
-const openNotificationWithIcon = type => {
-  notification[type]({
-    message: 'Registered Successfully',
-    description:
-      'Welcome to volunteer lawyer platform, we hope you enjoy our platform!',
-  });
-};
-
-
-export default function Register() {
+export default function RegisterIDVerification() {
 
   const [form] = Form.useForm();
 
@@ -251,12 +164,42 @@ export default function Register() {
 
                 <Col span="20">
                 <Form.Item 
-                    label="Law Firm Name"
-                    name="lawfirmname"
+                    label="Law Firm "
+                    name="lawfirm"
                     rules={[
                       {
                         required: true,
-                        message: 'Please input your Law Firm Name!',
+                        message: 'Please input your Law Firm!',
+                      },
+                    ]}
+                        >
+                <Input />
+                </Form.Item>
+                </Col>
+
+                <Col span="20">
+                <Form.Item 
+                    label="Address"
+                    name="address"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input the address!',
+                      },
+                    ]}
+                        >
+                <Input />
+                </Form.Item>
+                </Col>
+
+                <Col span="20">
+                <Form.Item 
+                    label="Postal Code "
+                    name="postalcode"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your postal code!',
                       },
                     ]}
                         >
@@ -268,7 +211,7 @@ export default function Register() {
                   <Col span="20" style={{textAlign:"left", marginLight:"100px"}}>
                       <Form.Item
                       name="location"
-                      label="Law Clinic Location "
+                      label="Location "
                       rules={[
                         {
                           type: 'array',
@@ -285,11 +228,10 @@ export default function Register() {
 
                 <Col span="20">
                 <Form.Item 
-                    label="Position"
+                    label="Years of Practice"
                     name="position"
                     rules={[
-                      {
-                        required: true,
+                      { 
                         message: 'Please input your Position!',
                       },
                     ]}
@@ -299,8 +241,6 @@ export default function Register() {
                 </Col>
 
                 <Row>
-    
-
                 <Col span="20">
                 <Form.Item 
                     label="Practicing Certificate"
@@ -325,6 +265,8 @@ export default function Register() {
                 </Col>
                 </Row>
 
+                <Row style={{marginTop:"40px"}}> 
+                <Col span="24">
                 <Form.Item
                     wrapperCol={{
                     offset: 10,
@@ -343,14 +285,14 @@ export default function Register() {
                     style={{marginTop:"20px", width:"200px", height:"40px",fontSize:"20px", 
                     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
                     borderColor:"#f4801b",backgroundColor:"#f4801b",color:"white"}}
-                    onClick={() => openNotificationWithIcon('success')}
                     >
-                         <Link href="/lawyer/">
+                         <Link href="/lawyer/registerSubmit">
                         <a>Submit</a>
                         </Link>
                     </Button>
                     </Form.Item>
-                
+                    </Col>
+                </Row>
                 </Form>
             </div>
          
