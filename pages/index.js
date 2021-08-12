@@ -8,6 +8,7 @@ const { Meta } = Card;
 
 export default function Home() {
   return (
+    //
     
     <div className="site-card-wrapper" style={{display: 'flex',justifyContent:'center',alignItems:'center',height: '100vh'}}>
         <Row gutter={16} align="center">
@@ -59,7 +60,7 @@ export default function Home() {
                 />
               }
               actions={[
-                <Link href="/lawyers/myCards"><Button type='primary'>View all Lawyers</Button></Link>
+                <Link href="/services"><Button type='primary'>View all Lawyers</Button></Link>
               ]}
             >
               <Meta
