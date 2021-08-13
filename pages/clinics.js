@@ -1,17 +1,29 @@
 
 import MyLayout from '../component/global/layout'
-import { Input, Card, Col, Row, Radio,Tag,Select,Button,Divider, Collapse} from 'antd';
+import { Input, Card, Col, Row, Radio,Tag,Select,Button,Divider, Collapse,Slider} from 'antd';
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
+React.useLayoutEffect = React.useEffect; 
 
 const { Meta } = Card;
 const { Search } = Input;
 const { Option } = Select;
 const { Panel } = Collapse;
 
-const CURRENTPOSTAL = 543272;
+const marks = {
+  0: '0 KM',
+  5: '5 KM',
+  10: '10 KM',
+  15: '15 KM',
+  20: {
+    style: {
+      color: '#f50',
+    },
+    label: <strong>20 KM</strong>,
+  },
+};
 
 const LAWFIRM = [
   {id:"1",name:"David's Firm",postalcode:"543273",walkin:1,shariah:1,address:'Punggol Centre',region:'W',citizenship:['Permanent Resident','Singaporean'],'shariah':1,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"},
@@ -40,7 +52,6 @@ function sort(tosort){
 
 
 function searchChange(filter,listtofilter){
-  console.log('checking filter:',filter);
   var result = [];
 
     if (filter == ""){
@@ -53,17 +64,18 @@ function searchChange(filter,listtofilter){
       for (let value of filter){
         for (let key in value){
           let len = value[key].length;
+
+          if (key == "distance" && listtofilter[i].distance > value.distance){
+            checker = 0;
+          }
           
-          if ((String(listtofilter[i][key]).substring(0,len)).toLowerCase()!= value[key].toLowerCase()){
-            console.log('checking value key:',value[key]);
-            console.log('checking listotfilter:',String(listtofilter[i][key]).substring(0,len));
+          if (key !="distance" && (String(listtofilter[i][key]).substring(0,len)).toLowerCase()!= String(value[key]).toLowerCase()){
             checker = 0;
           } 
         }
       }
       if(checker) result.push(listtofilter[i]);
     }
-
     return result;
 }
 
@@ -76,6 +88,8 @@ export default function Clinics() {
   const [selectedWalkIn,setWalkIn] = useState(null);
   const [selectedCitizenship,setCitizenship] = useState(null);
   const [selectedShariah,setShariah] = useState(0);
+  const [distanceSlider,setDistanceSlider] = useState(1);
+  const [selectedDistance,setDistance] = useState(0);
    
   var handleSearchTerm = (value) => {
     setSearchTerm([{"name":value.target.value}]); 
@@ -97,6 +111,10 @@ export default function Clinics() {
   var handleCitizenship = (value) => {
     setCitizenship({"citizenship":value});
   }
+  
+  var handleDistance =(value) =>{
+    setDistance({'distance':value});
+  }
 
   var handleFilter = () => {
     var filter = []
@@ -104,6 +122,7 @@ export default function Clinics() {
     if (selectedShariah) filter.push(selectedShariah);
     if (selectedRegion) filter.push(selectedRegion);
     if (selectedCitizenship) filter.push(selectedCitizenship);
+    if (selectedDistance) filter.push(selectedDistance);
     setFilteredList(searchChange(filter,originalList));
   }
 
@@ -112,6 +131,7 @@ export default function Clinics() {
     setWalkIn(null);
     setShariah(null);
     setRegion(null);
+    setDistance(null);
     window.location.reload();
   }
 
@@ -147,6 +167,7 @@ export default function Clinics() {
       console.log('this is result:',result)
       setFilteredList(result);
       console.log('this is filtered:',filteredList);
+      setDistanceSlider(0);
       });
   }
 
@@ -157,14 +178,19 @@ export default function Clinics() {
         <div>
           <h3>Find Nearest Clinics By Filter</h3>
           <Row gutter={[32, 16]} justify="space-between">
-            <Col span={16}>
+            <Col span={8}>
               <Search name="name" placeholder="Enter Law Firm Name " allowClear enterButton="Search" size="large"  onKeyUp={handleSearchTerm}/>
             </Col>
+
             <Col span={8}>
-            <Search placeholder="Enter Postal Code to Find Nearby Clinics" size="large" onSearch={getLocation} enterButton />
+              <Search placeholder="Enter Postal Code to Find Nearby Clinics" size="large" onSearch={getLocation} enterButton />
               {/* <Button type="primary" name="postalcode" size="large" onClick={getLocation}>Find Nearby Clinic</Button> */}
             </Col>
-          
+
+            <Col span={8}>
+              <Slider marks={marks} max={20} defaultValue={0} disabled={distanceSlider} onChange={handleDistance} />
+            </Col>
+
             <Col>
               <h4>Regional Search</h4>
               <Radio.Group size="large" name="region" onChange={handleRegion}>
