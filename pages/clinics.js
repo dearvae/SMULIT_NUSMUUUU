@@ -20,37 +20,6 @@ const LAWFIRM = [
   {id:"4",name:"Jason's Firm",postalcode:"199008",walkin:0,shariah:0,address:'Bedok',region:'S',citizenship:['Permanent Resident'],'shariah':0,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"}
 ]
 
-function getUserPostalCode() {
-
-  let getLocationPromise = new Promise((resolve, reject) => {
-    if(navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            var lat = position.coords.latitude;
-            var long = position.coords.longitude;
-            var point = new google.maps.LatLng(lat, long);
-            new google.maps.Geocoder().geocode(
-                {'latLng': point},
-                function (res, status) {
-                    var zip = res[0].formatted_address.match(/,\s\w{2}\s(\d{5})/);
-                    $("#location").val(zip);          
-                }
-            );
-            //let long = position.coords.longitude
-            resolve({zip:postalcode})
-        })
-    } else {
-        reject("your browser doesn't support geolocation API")
-    }
-})
-
-getLocationPromise.then((location) => {
-  console.log(location.postalcode)
-}).catch((err) => {
-    console.log(err)
-})
-  
-} 
-
 function sort(tosort){
   var sortlength = tosort.length;
   var min_idx = null;
