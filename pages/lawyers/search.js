@@ -20,7 +20,6 @@ export default function Search(props) {
   }
 
   function onChange(value) {
-    console.log("onChange: ", value);
   }
 
   function onAfterChange(value) {
@@ -28,6 +27,7 @@ export default function Search(props) {
     setFilterPrice(value);
   }
   function yop(value) {
+    console.log("yop",value)
     setStartyear(value[0])
     setEndyear(value[1])
   }
@@ -58,10 +58,9 @@ export default function Search(props) {
 
   const [searchName, setSearchName] = useState("");
   const [filterPrice, setFilterPrice] = useState("");
-  const [startyear, setStartyear] = useState("");
-  const [endyear, setEndyear] = useState("");
+  const [startyear, setStartyear] = useState(1);
+  const [endyear, setEndyear] = useState(40);
   const [filterLanguage, setFilterLanguage] = useState("");
- 
 
   return (
     <div>
@@ -131,20 +130,21 @@ export default function Search(props) {
               max={40}
               min={1}
               step={1}
-              defaultValue={[0, 40]}
               onChange={onChange}
               onAfterChange={yop}
+              //tooltipVisible={true}
+              //tooltipPlacement="bottom"
             />
           </Col>
         </Row>
         <hr></hr>
         {data
           .filter((val) => {
-            if (searchName == "" && filterLanguage == "" && startyear=="" && endyear=="") {
+            if (searchName == "" && filterLanguage == "" && startyear==1 && endyear==40) {
               return val;
             } else if (
-              val.lawyerName.toLowerCase().includes(searchName.toLowerCase()) &&
-              val.lang.includes(filterLanguage) && val.yearofpra <= endyear && val.yearofpra >= startyear 
+              val.lawyerName.toLowerCase().includes(searchName.toLowerCase())&&
+              val.lang.includes(filterLanguage) && val.yearofpra >= startyear && val.yearofpra <= endyear
             ) {
               return val; 
             }

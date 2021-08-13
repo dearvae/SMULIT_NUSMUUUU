@@ -2,7 +2,6 @@ import { SearchOutlined } from "@ant-design/icons";
 import { Card, Avatar, Button, Drawer, Row, Col } from "antd";
 import { useState } from "react";
 const { Meta } = Card;
-import Link from 'next/link';
 
 export default function MyCard(props) {
   const gridStyle = {
