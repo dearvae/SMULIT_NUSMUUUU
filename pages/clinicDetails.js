@@ -30,11 +30,6 @@ const contentStyle = {
     background: '#364d79',
   };
 
-function check(value){
-    console.log('entered');
-   
-}
-
 export default function ClinicDetails() {
 
     const [selectedFirm,setFirm] = useState(0);
