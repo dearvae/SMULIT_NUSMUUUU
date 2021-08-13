@@ -1,7 +1,7 @@
 
 import MyLayout from '../component/global/layout'
 import { Input, Card, Col, Row, Radio,Tag,Select,Button,Divider, Collapse} from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import Link from 'next/link';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
@@ -20,16 +20,23 @@ const LAWFIRM = [
   {id:"4",name:"Jason's Firm",postalcode:"199008",walkin:0,shariah:0,address:'Bedok',region:'S',citizenship:['Permanent Resident'],'shariah':0,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"}
 ]
 
-function getLocation() {
-  var longi = 0;
-  var lati = 0;
+function getUserPostalCode() {
+
   let getLocationPromise = new Promise((resolve, reject) => {
     if(navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function (position) {
-            let lat = position.coords.latitude
-            let long = position.coords.longitude
-            resolve({latitude: lat, 
-                    longitude: long})
+            var lat = position.coords.latitude;
+            var long = position.coords.longitude;
+            var point = new google.maps.LatLng(lat, long);
+            new google.maps.Geocoder().geocode(
+                {'latLng': point},
+                function (res, status) {
+                    var zip = res[0].formatted_address.match(/,\s\w{2}\s(\d{5})/);
+                    $("#location").val(zip);          
+                }
+            );
+            //let long = position.coords.longitude
+            resolve({zip:postalcode})
         })
     } else {
         reject("your browser doesn't support geolocation API")
@@ -37,12 +44,31 @@ function getLocation() {
 })
 
 getLocationPromise.then((location) => {
-  console.log(location.latitude)
+  console.log(location.postalcode)
 }).catch((err) => {
     console.log(err)
 })
-  console.log(lati,longi);
+  
 } 
+
+function sort(tosort){
+  var sortlength = tosort.length;
+  var min_idx = null;
+
+  for (let k =0 ; k < sortlength ; k++){
+    min_idx = k
+
+    for(let j=k+1;j< sortlength;j++){
+      if (tosort[min_idx].distance > tosort[j].distance){
+        min_idx = j;
+      }
+    }
+    
+    [tosort[min_idx],tosort[k]] = [tosort[k],tosort[min_idx]];
+  }
+
+}
+
 
 function searchChange(filter,listtofilter){
   console.log('checking filter:',filter);
@@ -80,14 +106,8 @@ export default function Clinics() {
   const [selectedRegion,setRegion] = useState(null);
   const [selectedWalkIn,setWalkIn] = useState(null);
   const [selectedCitizenship,setCitizenship] = useState(null);
-  const [userLocation, setLocation] = useState(0);
   const [selectedShariah,setShariah] = useState(0);
-  const [distancelist,setDisance] = useState([]);
    
-  var handleLocation = (position) => {
-    setLocation({'lat':position.coords.latitude,'long':position.coords.longitude})
-  }
-
   var handleSearchTerm = (value) => {
     setSearchTerm([{"name":value.target.value}]); 
     setFilteredList(searchChange([{name:value.target.value}],originalList));
@@ -126,13 +146,12 @@ export default function Clinics() {
     window.location.reload();
   }
 
-  var getLocation = ()=>{
+  function getLocation(value){
 
     //get current postalcode
-    var postalcode = CURRENTPOSTAL;
+    var postalcode = value;
 
-    //api call to compare distance - sorted in descending order by API
-    // {119077: 16.01, 178903: 10.83, 199008: 9.64, 543273: 0.08}
+    // //API call to get distance
     var comparestr = "";
     var result = [];
     for (let ele of originalList){
@@ -143,28 +162,23 @@ export default function Clinics() {
     var url = "https://app.zipcodebase.com/api/v1/distance?apikey=846f1be0-fb6b-11eb-b243-8b039ec3b8c3&code="+postalcode+"&compare="+comparestr+"&country=sg";
     console.log(url);
     //API call
-    // axios.get(url)
-    // .then(res => {
-    //   setDisance(res.data.results);
-    //   //console.log(res.data.results);
-    //   });
-    var distances = {119077: 16.01, 178903: 10.83, 199008: 9.64, 543273: 0.08};
-    
-    for (let distance in distances){
-      for (let firm of originalList){
-        console.log(distances[distance]);
-        if(distance == firm.postalcode){
-          let temp = firm;
-          temp["distance"] = distances[distance];
-          result.push(temp);
-          }
+    axios.get(url)
+    .then(res => {
+      var distances = res.data.results;
+      for (let distance in distances){
+        for (let firm of originalList){
+          if(distance == firm.postalcode){
+            let temp = firm;
+            temp["distance"] = distances[distance];
+            result.push(temp);
+            }
+        }
       }
-    }
-
-    result.reverse();
-    setOriginalList(result);
-    setFilteredList(originalList);
-
+      sort(result);
+      console.log('this is result:',result)
+      setFilteredList(result);
+      console.log('this is filtered:',filteredList);
+      });
   }
 
   return (
@@ -174,11 +188,12 @@ export default function Clinics() {
         <div>
           <h3>Find Nearest Clinics By Filter</h3>
           <Row gutter={[32, 16]} justify="space-between">
-            <Col span={20}>
+            <Col span={16}>
               <Search name="name" placeholder="Enter Law Firm Name " allowClear enterButton="Search" size="large"  onKeyUp={handleSearchTerm}/>
             </Col>
-            <Col span={4}>
-              <Button type="primary" name="postalcode" size="large" onClick={getLocation}>Find Nearby Clinic</Button>
+            <Col span={8}>
+            <Search placeholder="Enter Postal Code to Find Nearby Clinics" size="large" onSearch={getLocation} enterButton />
+              {/* <Button type="primary" name="postalcode" size="large" onClick={getLocation}>Find Nearby Clinic</Button> */}
             </Col>
           
             <Col>
