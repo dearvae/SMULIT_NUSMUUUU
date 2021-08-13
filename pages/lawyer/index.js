@@ -1,14 +1,8 @@
 import MyLayout from '../../component/global/lawyerlayout'
 import Link from 'next/link'
 import React, { useState }  from 'react';
-import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import {  Button, Checkbox,List, Card, Modal } from 'antd';
-import Title from 'antd/lib/skeleton/Title';
-
-function onChange(checkedValues) {
-    console.log('checked = ', checkedValues);
-  }
+import {  Button,List, Card, Modal } from 'antd';
 
   const data = [
     {
@@ -81,38 +75,30 @@ export default function Home() {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
     return (
      <>
         <div style={{margin:'1em'}}>
-            <h1 style ={{textAlign:'center',margin:'2em'}}>Select Your Service!</h1>
+            <h1 style ={{textAlign:'center',margin:'2em'}}>Your Registered Service(s)</h1>
             <List
                 grid={{ gutter: 20, column: 3 }}
                 dataSource={data}
                 renderItem={item => (
                 <List.Item style={{textAlign:'center'}}>
                     <Card title={item.title} >
-                        <img src={item.image} style={{width:'100px'}}></img>  
-                        <div style={{textAlign:'center',marginTop:"6px"}}>
-
-                    <Button type="primary" onClick={showModal}>
-                      Add Service
-                    </Button>
-
-                    <Modal title="Add service" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                      Service fee: <input></input>
-                     
-                    </Modal>
-                  </div>  
+                        <img src={item.image} style={{width:'100px'}}></img>                   
                     </Card>
 
-  
-                 
+                    <Button type="primary" onClick={showModal} style={{marginTop:"10px"}}>
+                        Add Service Fee
+                      </Button>
+                      <Modal title="Add Service Fee" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                        Service Fee (SGD): <input></input>
+      
+                      </Modal>
+
                 </List.Item>
                 )}
             />
-
-
         </div>
      </>
     )

@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Layout, Menu,Image,Avatar} from 'antd';
 import {
   HomeOutlined, 
-  ReconciliationOutlined, 
+  LogoutOutlined, 
   UserOutlined,
 } from '@ant-design/icons';
 const { Header, Content, Footer, Sider } = Layout;
@@ -32,14 +32,15 @@ export default function MyLayout({ number, children }) {
             </Link>
           </Menu.Item>
           
-          <Menu.Item key="2" icon={<ReconciliationOutlined />}>
-            <Link href="/lawyer/">
-              <a>Clinics</a>
-            </Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UserOutlined />}>
+          <Menu.Item key="2" icon={<UserOutlined />}>
             <Link href="/lawyer/profile">
               <a>Profile</a>
+            </Link>
+          </Menu.Item>
+
+          <Menu.Item key="3" icon={<LogoutOutlined />}>
+            <Link href="/lawyer/login">
+              <a>Log Out</a>
             </Link>
           </Menu.Item>
           
