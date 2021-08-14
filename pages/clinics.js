@@ -253,7 +253,7 @@ export default function Clinics() {
         </Row>
       </div>
       <Divider />
-      <div className="site-card-wrapper" style={{height: '90vh'}}>
+      <div className="site-card-wrapper">
       <h3 style={{margin:"5vh",textAlignVertical: "center",textAlign: "center",fontSize:"25px"}}>Search Results</h3>
       
       <Row gutter={[16,16]}>
