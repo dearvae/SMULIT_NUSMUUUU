@@ -3,7 +3,7 @@ import { Row, Col, Slider, Select, Input } from "antd";
 import MyCard from "../../component/lawyers/myCard";
 
 export default function Search(props) {
-  const [language, setLang] = useState("en");
+  let language=props.lang
   const { Option } = Select;
   let data = props.serviceType;
 
@@ -71,7 +71,7 @@ export default function Search(props) {
             <Input
               size="medium"
               bordered={true}
-              placeholder={language == "en" ? "Search by name " : "按名字搜索"}
+              placeholder={language ? "Search by name " : "按名字搜索"}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
             ></Input>
@@ -80,7 +80,7 @@ export default function Search(props) {
             <Select
               showSearch
               style={{ width: 200 }}
-              placeholder={language == "en" ? "Language" : "按语言搜索"}
+              placeholder={language  ? "Language" : "按语言搜索"}
               optionFilterProp="children"
               onChange={(value) => {
                 setFilterLanguage(value);
@@ -93,13 +93,13 @@ export default function Search(props) {
               }
             >
               <Option value="Mandarin">
-                {language == "en" ? "Mandarin" : "华文"}
+                {language ? "Mandarin" : "华文"}
               </Option>
               <Option value="English">
-                {language == "en" ? "English" : "英文"}
+                {language ? "English" : "英文"}
               </Option>
               <Option value="French">
-                {language == "en" ? "French" : "法语"}
+                {language  ? "French" : "法语"}
               </Option>
             </Select>
           </Col>
@@ -107,7 +107,7 @@ export default function Search(props) {
         <Row>
           <Col span={2}>
             <label style={{ fontSize: 18 }} htmlFor="priceSlider">
-              {language == "en" ? "Price" : "价格"}
+              {language  ? "Price" : "价格"}
             </label>
           </Col>
           <Col span={6}>
@@ -124,7 +124,7 @@ export default function Search(props) {
           </Col>
           <Col span={2} offset={4}>
             <label style={{ fontSize: 18 }} htmlFor="priceSlider">
-              {language == "en" ? "Year of Practice" : "从业经验"}
+              {language  ? "Year of Practice" : "从业经验"}
             </label>
           </Col>
           <Col span={6}>
@@ -182,6 +182,7 @@ export default function Search(props) {
                 lang={val.lang}
                 pos={val.pos}
                 price={val.price}
+                setting_lang={language}
               />
             );
           })}
