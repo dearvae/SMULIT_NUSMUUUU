@@ -38,7 +38,9 @@ export default function ClinicDetails() {
     useEffect(()=>{
             const id = queryString.parse(location.search).id;
             const lang = queryString.parse(location.search).lang;
-            setLanguage(lang);
+            if (lang == "false"){
+              setLanguage(false);
+            }
             var details = null;
             for (let firm of LAWFIRM){
                 if (firm.id == id){
@@ -48,7 +50,7 @@ export default function ClinicDetails() {
             setFirm(details);
             },[selectedFirm]);
     console.log('checking selected firm:',selectedFirm);
-    console.log('checking selected language:',language);
+    console.log('checking selected language:',String(language));
     
   return ( 
     <div>
