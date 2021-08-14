@@ -1,6 +1,6 @@
 
 import MyLayout from '../component/global/layout'
-import { Input, Card, Col, Row, Radio,Tag,Select,Button,Divider, Collapse,Slider} from 'antd';
+import { Input, Card, Col, Row, Radio,Tag,Select,Button,Divider, Collapse,Slider,Switch} from 'antd';
 import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import Link from 'next/link';
@@ -26,10 +26,10 @@ const marks = {
 };
 
 const LAWFIRM = [
-  {id:"1",name:"David's Firm",postalcode:"543273",walkin:1,shariah:1,address:'Punggol Centre',region:'W',citizenship:['Permanent Resident','Singaporean'],'shariah':1,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"},
-  {id:"2",name:"Kelvin's Firm",postalcode:"178903",walkin:0,shariah:1,address:'Jurong Centre',region:'E',citizenship:['Other'],'shariah':1,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"},
-  {id:"3",name:"Benjamins's Firm",postalcode:"119077",walkin:1,shariah:0,address:'Clementi',region:'E',citizenship:['Singaporean'],'shariah':0,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"},
-  {id:"4",name:"Jason's Firm",postalcode:"199008",walkin:0,shariah:0,address:'Bedok',region:'S',citizenship:['Permanent Resident'],'shariah':0,description:"we are xxxxxxxxxxxxxxxx",website:"www.123.com",phone:"68281951",email:"probonocenter@smu.edu.sg",openinghrs:"Monday - Friday : 6.30pm - 8.30pm (except public holiday)"}
+  {id:"1",name:"Law Society South East District",postalcode:"408600",walkin:1,shariah:0,address:'Singapore Post Centre #02-01 10 Eunos Road 8Singapore 408600',region:'East',citizenship:['Permanent Resident','Singaporean'],'shariah':1,description:"Members of the public/residents need to call Law Society of Singapore at 65360650 for appointment. They can also email to ProBonoServices@lawsoc.org.sg or register at any Family Service Centre. See website for more details.",website:"https://legalclinics.sg/index.php?item=51",phone:"65360650",email:"probonoservices@lawsoc.org.sg",openinghrs:"Tuesdays 7 - 9pm"},
+  {id:"2",name:"Law Society North West District",postalcode:"730900",walkin:0,shariah:1,address:'Woodlands Civic Centre 6th floor 900 South Woodlands Drive Singapore 730900',region:'North',citizenship:['Permanent Resident','Singaporean'],'shariah':1,description:"Members of the public/residents need to call Law Society of Singapore at 65360650 for appointment. They can also email to ProBonoServices@lawsoc.org.sg or register at any Family Service Centre. See website for more details.",website:"https://legalclinics.sg/index.php?item=51",phone:"65360650",email:"probonoservices@lawsoc.org.sg",openinghrs:"Mondays 7-9pm"},
+  {id:"3",name:"HELP Centre - Clinic",postalcode:"059725",walkin:1,shariah:0,address:'Family and Juvenile Court Building Level 3 3 Havelock Square Singapore 059725',region:'Central',citizenship:['Singaporean','Permanent Resident','Other'],'shariah':0,description:"@HELP Services Centre: free consultations with lawyers from volunteer law firms. For civil cases only. Strictly by appointment only. Please contact The Law Society of Singapore - Pro Bono Services Office at 6536 0650 for the appointment.",website:"http://app.subcourts.gov.sg/subcourts/page.aspx?pageid=77220&secid=1",phone:"65360650",email:"probonocenter@smu.edu.sg",openinghrs:"Every Wednesday 11am - 1pm"},
+  {id:"4",name:"Family Court Legal Clinic",postalcode:"64355110",walkin:0,shariah:0,address:'Family and Juvenile Court Building 3 Havelock Square Singapore 059725',region:'Central',citizenship:['Singaporean','Permanent Resident','Other'],'shariah':0,description:"Legal advice is for a Family Law/Family Court related matter. Each consultation is limited to a 20 minutes.Please call 64355110 to make an appointment. This clinic is run by the Law Society.",website:"https://www.familyjusticecourts.gov.sg/QuickLink/Pages/ServicesOverview.aspx",phone:"64355110",email:"probonocenter@smu.edu.sg",openinghrs:"Wednesday 4:30pm to 5:50pm"}
 ]
 
 function sort(tosort){
@@ -90,6 +90,7 @@ export default function Clinics() {
   const [selectedShariah,setShariah] = useState(0);
   const [distanceSlider,setDistanceSlider] = useState(1);
   const [selectedDistance,setDistance] = useState(0);
+  const [language,setLanguage] = useState(true);
    
   var handleSearchTerm = (value) => {
     setSearchTerm([{"name":value.target.value}]); 
@@ -114,6 +115,11 @@ export default function Clinics() {
   
   var handleDistance =(value) =>{
     setDistance({'distance':value});
+  }
+
+  var handleLanguage = (value) =>{
+    setLanguage(value);
+    console.log('current language is:',value);
   }
 
   var handleFilter = () => {
@@ -173,17 +179,25 @@ export default function Clinics() {
 
   return (
     <div stype={{justifyContent:'center',alignItems:'center'}}>
-      <h2 style={{fontSize:"30px"}}>Clinics</h2>
-        
+      <Row>
+        <Col span={21}>
+          <h2 style={{fontSize:"30px"}}>Clinics</h2> 
+        </Col>
+        <Col>
+          <br></br> 
+           {language ? "Language :   " : "语言 :   "  }
+              <Switch defaultChecked checkedChildren="EN" unCheckedChildren="CH" onChange={handleLanguage}/>
+        </Col>
+      </Row>
         <div>
-          <h3>Find Nearest Clinics By Filter</h3>
+          <h3>{language ? "Find Nearest Clinics By Filter" : "寻找附近的法律援助中心"  }</h3>
           <Row gutter={[32, 16]} justify="space-between">
             <Col span={8}>
-              <Search name="name" placeholder="Enter Law Firm Name " allowClear enterButton="Search" size="large"  onKeyUp={handleSearchTerm}/>
+              <Search name="name" placeholder={language ? "Enter Clinic Name" : "输入法律援助中心"  } allowClear enterButton={language ? "Search" : "搜索"  } size="large"  onKeyUp={handleSearchTerm}/>
             </Col>
 
             <Col span={8}>
-              <Search placeholder="Enter Postal Code to Find Nearby Clinics" size="large" onSearch={getLocation} enterButton />
+              <Search placeholder={language ? "Enter Postal Code to Find Nearby Clinics" : "输入邮政编码"} size="large" onSearch={getLocation} enterButton />
               {/* <Button type="primary" name="postalcode" size="large" onClick={getLocation}>Find Nearby Clinic</Button> */}
             </Col>
 
@@ -192,49 +206,49 @@ export default function Clinics() {
             </Col>
 
             <Col>
-              <h4>Regional Search</h4>
+              <h4>{language ? "Regional Search" : "区域"}</h4>
               <Radio.Group size="large" name="region" onChange={handleRegion}>
-                <Radio.Button value="N" >North</Radio.Button>
-                <Radio.Button value="S" >South</Radio.Button>
-                <Radio.Button value="E" >East</Radio.Button>
-                <Radio.Button value="W" >West</Radio.Button>
-                <Radio.Button value="C" >Central</Radio.Button>
+                <Radio.Button value="North" >North</Radio.Button>
+                <Radio.Button value="South" >South</Radio.Button>
+                <Radio.Button value="East" >East</Radio.Button>
+                <Radio.Button value="West" >West</Radio.Button>
+                <Radio.Button value="Central" >Central</Radio.Button>
               </Radio.Group>
             </Col>
 
             <Col>
               <Row>
-                <h4>Walk In</h4>
+                <h4>{language ? "Walk In" : "是否需要预约"}</h4>
               </Row>
               <Row>
                 <Radio.Group size="large" name='walkin' onChange={handleWalkIn}>
-                  <Radio.Button value="1">Yes</Radio.Button>
-                  <Radio.Button value="0">No</Radio.Button>
+                  <Radio.Button value="1">{language ? "Yes" : "是"}</Radio.Button>
+                  <Radio.Button value="0">{language ? "No" : "否"}</Radio.Button>
                 </Radio.Group>
               </Row>
             </Col>
 
             <Col>
               <Row>
-                <h4>Shariah</h4>
+                <h4>{language ? "Shariah" : "伊斯兰教"}</h4>
               </Row>
               <Row>
                 <Radio.Group defaultValue="a" size="large" name='shariah' onChange={handleShariah}>
-                  <Radio.Button value="1">Yes</Radio.Button>
-                  <Radio.Button value="0">No</Radio.Button>
+                  <Radio.Button value="1">{language ? "Yes" : "是"}</Radio.Button>
+                  <Radio.Button value="0">{language ? "No" : "否"}</Radio.Button>
                 </Radio.Group>
               </Row>
             </Col>
 
             <Col>
               <Row>
-                <h4>Citizenship</h4>
+                <h4>{language ? "Citizenship" : "国籍"}</h4>
               </Row>
               <Row>
                 <Select size="large"style={{ width: 200 }} name='citizenship' onChange={handleCitizenship}>
-                  <Option value="Singaporean">Singaporean</Option>
-                  <Option value="Permanent Resident">Permanent Resident</Option>
-                  <Option value="Other">Others</Option>
+                  <Option value="Singaporean">{language ? "Singaporean" : "新加坡"}</Option>
+                  <Option value="Permanent Resident">{language ? "Permanent Resident" : "永久居民"}</Option>
+                  <Option value="Other">{language ? "Others" : "其它"}</Option>
                 </Select>
               </Row>
             </Col>
@@ -243,34 +257,34 @@ export default function Clinics() {
             <br></br>
               <Row>
                 <Col>
-                  <Button type="primary" onClick={handleFilter} size="large">Search</Button>
+                  <Button type="primary" onClick={handleFilter} size="large">{language ? "Search" : "搜索"}</Button>
                 </Col>
                 <Col>
-                <Button size="large" onClick={clearFilter}>Clear</Button>   
+                <Button size="large" onClick={clearFilter}>{language ? "Clear" : "清空"}</Button>   
                 </Col>
               </Row>
             </Col>       
         </Row>
       </div>
       <Divider />
-      <div className="site-card-wrapper" style={{height: '90vh'}}>
-      <h3 style={{margin:"5vh",textAlignVertical: "center",textAlign: "center",fontSize:"25px"}}>Search Results</h3>
+      <div className="site-card-wrapper">
+      <h3 style={{margin:"5vh",textAlignVertical: "center",textAlign: "center",fontSize:"25px"}}>{language ? "Search Results" : "搜索结果"}</h3>
       
       <Row gutter={[16,16]}>
       {filteredList.map(lawfirm => {
               return (
                 <Col key={lawfirm.id} span={8}>
-                  <Link href={"/clinicDetails?id="+lawfirm.id}>
+                  <Link href={"/clinicDetails?id="+lawfirm.id+"&lang="+language}>
                     <Card title={lawfirm.name}
                       hoverable
                       style={{ width: 350 }}
-                      cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}>
-                      <Meta title={lawfirm.name} description={lawfirm.description}/>  
+                      cover={<img alt="example" src="https://ericmembers.files.wordpress.com/2017/02/legal.png" />}>
+                      <Meta title={lawfirm.name}/>  
                       <div style={{marginTop:"1vh"}}>
                         {lawfirm.hasOwnProperty("distance") ?
                           <Tag color="yellow" key={lawfirm.id+lawfirm.distance}>{lawfirm.distance}KM away</Tag> : ""
                         }
-                          <Tag color="green" key={lawfirm.id+lawfirm.address}>{lawfirm.address}</Tag>
+                          <Tag color="green" key={lawfirm.id+lawfirm.address}>{lawfirm.region}</Tag>
                           {lawfirm.citizenship.map(citizenship => {
                             return (
                               <Tag color="blue" key={lawfirm.id+"citizenship"+citizenship}>{citizenship}</Tag>

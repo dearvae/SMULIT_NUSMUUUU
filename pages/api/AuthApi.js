@@ -23,32 +23,25 @@ export default class AuthApi {
   //         password
   //     })
   // }
-
-  static authLoginUser(email, password) {
-    return AxiosTool().post(AuthApi.authLoginUserPath, { email, password });
-  }
-
-  static authLoginLawyer(email, password) {
-    return AxiosTool().post(AuthApi.authLoginLoginPath, { email, password });
-  }
-
-  static authRegisterUser(name, email, password) {
-    console.log(name);
-    return AxiosTool().post(AuthApi.authRegisterUserPath, {
-      name,
-      email,
-      password,
-    });
-  }
-
-  static authRegisterDoctor(name, email, password) {
-    return AxiosTool().post(AuthApi.authRegisterDoctorPath, {
-      name,
-      email,
-      password,
-    });
-  }
-  static authGetAllLawyer = () => {
-    return AxiosTool().get(AuthApi.authGetAllLawyerPath);
-  };
+    static authRegisterLawyer(first_name,middle_name,last_name,birthday,
+                                phone_number, gender, email, password,
+                                law_firm,address,postal_code,location,year_of_practice,cert_url) {
+        console.log(name)
+        return AxiosTool().post(AuthApi.authRegisterUserPath, {
+            first_name,
+            middle_name,
+            last_name,
+            birthday,
+            phone_number,
+            gender,
+            email,
+            password,
+            law_firm,
+            address,
+            postal_code,
+            location,
+            year_of_practice,
+            cert_url
+        })
+    }
 }

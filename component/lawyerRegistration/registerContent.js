@@ -24,13 +24,70 @@ const formItemLayout = {
   },
 };
 
-export default function Register() {
+export default function Register(Props) {
+  const { setFirstName, setMiddleName, setLastName,setBirthday,setPhoneNumber,
+    setGender,setEmail,setPassword,setConfirmPassword } = Props
 
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
   };
+  
+  const onFirstNameChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setFirstName(value)
+  }
+
+  const onMiddleNameChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setMiddleName(value)
+  }
+
+  const onLastNameChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setLastName(value)
+  }
+
+  const onBirthdayChange = (date, dateString) => {
+    console.log(dateString)
+    setBirthday( dateString)
+  }
+
+  const onPhoneNumberChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setPhoneNumber(value)
+  }
+
+  const onGenderChange = (value) => {
+    // const { value } = e.target;
+    console.log(`${value}`)
+    setGender(`${value}`)
+  }
+
+  const onEmailChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setEmail(value)
+  }
+
+  const onPasswordChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setPassword(value)
+  }
+
+  const onConfirmPasswordChange = (e) => {
+    const { value } = e.target;
+    console.log(value)
+    setConfirmPassword(value)
+  }
+
+  
 
   const prefixSelector = (
         <Form.Item name="prefix" noStyle>
@@ -88,7 +145,7 @@ export default function Register() {
                       rules={[{required: true,
                               message: 'Please input your first name!',},
                           ]} >
-                      <Input />
+                      <Input onChange={onFirstNameChange} />
                   </Form.Item>
                 </Col>
                 <Col span={20}>
@@ -96,7 +153,7 @@ export default function Register() {
                         label="Middle Name"
                         name="middlename"
                         >
-                    <Input />
+                    <Input onChange={onMiddleNameChange}/>
                     </Form.Item>
                 </Col>
                 <Col span={20}>
@@ -108,7 +165,7 @@ export default function Register() {
                                 message: 'Please input your last name!',},
                             ]}
                         >
-                    <Input />
+                    <Input onChange={onLastNameChange}/>
                     </Form.Item>
                 </Col>
               </Row>
@@ -116,7 +173,7 @@ export default function Register() {
                 <Row>
                   <Col span={20}>
                     <Form.Item label="Birth Date">
-                    <DatePicker />
+                    <DatePicker onChange={onBirthdayChange}/>
                     </Form.Item>
                   </Col>
 
@@ -136,6 +193,7 @@ export default function Register() {
                         style={{
                           width: '100%',
                         }}
+                        onChange={onPhoneNumberChange}
                       />
                     </Form.Item>
 
@@ -143,7 +201,7 @@ export default function Register() {
 
                   <Col span={20}>
                   <Form.Item label="Gender">
-                    <Select>
+                    <Select onChange={onGenderChange}>
                         <Select.Option value="Male">Male</Select.Option>
                         <Select.Option value="Female">Female</Select.Option>
                         <Select.Option value="Prefer not to say">Prefer not to say</Select.Option>
@@ -168,7 +226,7 @@ export default function Register() {
                       },
                     ]}
                         >
-                <Input />
+                <Input onChange={onEmailChange}/>
                 </Form.Item>
                 </Col>
 
@@ -183,7 +241,7 @@ export default function Register() {
                         },
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password onChange={onPasswordChange}/>
                     </Form.Item>
                 </Col>
 
@@ -198,7 +256,7 @@ export default function Register() {
                       },
                       ]}
                   >
-                    <Input.Password />
+                    <Input.Password onChange={onConfirmPasswordChange}/>
                 </Form.Item>
                 </Col>
                 </Form>
