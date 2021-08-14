@@ -82,7 +82,7 @@ export default function OtherContent(props) {
       wrapperCol={{ span: 12 }}
       onFinish={onSubmit}
     >
-        <Title level={2}>
+        <Title level={4}>
             Please add all your household members' total income in past 12 months including yours.
         </Title>
 

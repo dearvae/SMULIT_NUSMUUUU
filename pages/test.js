@@ -8,18 +8,57 @@ import OtherContent from "../component/test/otherContent"
 import Cover from "../component/test/cover"
 import { useState } from 'react';
 import { useRouter } from 'next/router'
+import { ZhihuCircleFilled } from '@ant-design/icons';
 
 const { Step } = Steps;
 
-export default function Test() {
+const en = {
+  "successMsg1" : "Congratulations! Based on our simplified assessment, you will likely pass the means test required by Legal Aid Bureau (“LAB”)! ",
+  "successMsg2" : 'Next, you may wish to visit LAB’s website for more information relating to the second stage - the Merits Test. More information on the Merits Test can be found <a target="_blank" href="https://lab.mlaw.gov.sg/legal-services/taking-the-merits-test/">[here]</a>(https://lab.mlaw.gov.sg/legal-services/taking-the-merits-test/).',
+  "successMsg3" : "What you can expect?",
+  "successMsg4" : "Basically, LAB will give you an appointment for Statement Taking. During that, you will be asked questions about your case. You should provide LAB with the full facts of your case as well as all the relevant documents/evidence. This helps LAB to investigate your case and assess whether legal aid should be granted to you. ",
+  "successMsg5" : "After your statement is taken, LAB will assess if legal aid should be granted to you, especially whether you have reasonable grounds for bringing or defending a case in Court.",
+  "backText" : "Back to Home Page",
+  "meansTest" : "Means Test",
+  "qualification":"Do I qualify for legal aid?",
+  "startTest":"Start Test",
+  "next":"Next",
+  "eligibilityCheck":"Check my eligibility",
+
+
+}
+
+// const zh = {
+//   "successMsg1" : "Congratulations! Based on our simplified assessment, you will likely pass the means test required by Legal Aid Bureau (“LAB”)! ",
+//   "successMsg2" : 'Next, you may wish to visit LAB’s website for more information relating to the second stage - the Merits Test. More information on the Merits Test can be found <a target="_blank" href="https://lab.mlaw.gov.sg/legal-services/taking-the-merits-test/">[here]</a>(https://lab.mlaw.gov.sg/legal-services/taking-the-merits-test/).',
+//   "successMsg3" : "What you can expect?",
+//   "successMsg4" : "Basically, LAB will give you an appointment for Statement Taking. During that, you will be asked questions about your case. You should provide LAB with the full facts of your case as well as all the relevant documents/evidence. This helps LAB to investigate your case and assess whether legal aid should be granted to you. ",
+//   "successMsg5" : "After your statement is taken, LAB will assess if legal aid should be granted to you, especially whether you have reasonable grounds for bringing or defending a case in Court.",
+//   "backText" : "Back to Home Page",
+
+// }
+export default function Test(Props) {
+  const {language, setLanguage} = Props;
   const [current, setCurrent] = useState(0);
   const [isValid, setIsValid] = useState(false);
   const router = useRouter();
+  const text = language === 'en' ? en : zh;
+
   function showSuccess() {
     Modal.success({
       title: 'Congratulations! You have passed the Means Test',
-      content: "Next, you will be given an appointment for Statement Taking. During the Statement Taking, a Legal Executive will ask you questions about your case. You should provide LAB with the full facts of your case as well as all the relevant documents/evidence. This helps LAB to investigate your case and assess whether legal aid should be granted to you. After your statement is taken, LAB will investigate your case and assess if legal aid should be granted to you. LAB will assess if you have reasonable grounds for bringing or defending a case in Court (“**the Merits Test**”), after we get a thorough understanding of your case. More information on the Merits Test can be found [here](https://lab.mlaw.gov.sg/legal-services/taking-the-merits-test/).",
-      okText: 'Back to Home Page',
+      content: <>
+      <p> {text.successMsg1} </p>
+
+      <p> {text.successMsg2} </p>
+
+      <p> {text.successMsg3} </p>
+
+      <p> {text.successMsg4} </p>
+
+      <p> {text.successMsg5} </p>
+      </>,
+      okText: `${text.backText}`,
       width:'800px',
       afterClose: () => { router.push("/") }
     });
@@ -31,19 +70,19 @@ export default function Test() {
   };
 
   const contents = [
-    <Cover isValid={isValid} setIsValid={setIsValid}/>,
-    <IdentityContent isValid={isValid} setIsValid={setIsValid}/>,
-    <PropertyContent isValid={isValid} setIsValid={setIsValid}/>,
-    <SavingContent isValid={isValid} setIsValid={setIsValid}/>,
-    <OtherContent isValid={isValid} setIsValid={setIsValid}/>
+    <Cover isValid={isValid} language={language} setIsValid={setIsValid}/>,
+    <IdentityContent isValid={isValid} language={language} setIsValid={setIsValid}/>,
+    <PropertyContent isValid={isValid} language={language}  setIsValid={setIsValid}/>,
+    <SavingContent isValid={isValid} language={language} setIsValid={setIsValid}/>,
+    <OtherContent isValid={isValid} language={language} setIsValid={setIsValid}/>
   ]
 
   return (
    <>
      <PageHeader
       className="site-page-header"
-      title="Means Test"
-      subTitle="Do I qualify for legal aid?"
+      title={text.meansTest}
+      subTitle={text.qualification}
       />
       <div>
         <Steps current={current} >  
@@ -60,18 +99,18 @@ export default function Test() {
 
         {current === 0 && isValid && (
           <Button style={{float:"right"}} type="primary" onClick={() => next()}>
-            Start Test
+            {text.startTest}
           </Button>
         )}
 
         {current < contents.length - 1 && current != 0 && isValid && (
           <Button style={{float:"right"}} type="primary" onClick={() => next()}>
-            Next
+            {text.next}
           </Button>
         )}
         {current === contents.length - 1 && isValid && (
           <Button style={{float:"right"}} type="primary" onClick={showSuccess}>
-            Check my eligibility
+            {text.eligibilityCheck}
           </Button>
         )}
       </div>
