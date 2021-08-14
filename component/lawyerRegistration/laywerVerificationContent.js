@@ -26,7 +26,6 @@ const props = {
   },
 };
 
-const { Step } = Steps;
 
 const { Option } = Select;
 const formItemLayout = {
@@ -132,11 +131,6 @@ export default function RegisterIDVerification() {
 
     return (
      <>
-        <PageHeader className="site-page-header"/>
-            <div>
-          <h1 style ={{textAlign:'center',margin:'0.2em', fontSize:"30px", marginBottom:"25px"}}> 
-          Volunteer Lawyer Registration</h1>
-
           <div>
             <Form
                 {...formItemLayout}
@@ -150,16 +144,6 @@ export default function RegisterIDVerification() {
                 scrollToFirstError
                 style={{margin:"auto auto"}}
                 >
-                
-                <Row>
-                <Col span={20}  style={{margin:"auto auto", paddingBottom:"20px",textAlign:"center"}}>
-                <Steps>
-                  <Step status="finish" title="Register" icon={<UserOutlined />} />
-                  <Step status="process" title="ID Verification" icon={<LoadingOutlined />} />
-                  <Step status="wait" title="Done" icon={<SmileOutlined />} />
-                </Steps>
-                </Col>
-                </Row>
             
 
                 <Col span="20">
@@ -264,39 +248,9 @@ export default function RegisterIDVerification() {
                 </Form.Item>
                 </Col>
                 </Row>
-
-                <Row style={{marginTop:"40px"}}> 
-                <Col span="24">
-                <Form.Item
-                    wrapperCol={{
-                    offset: 10,
-                    span: 6,
-                    }}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'create succesfully!',
-                        },
-                        ]}
-                >
-                    <Button 
-                    htmlType="submit" 
-                    shape="round"
-                    style={{marginTop:"20px", width:"200px", height:"40px",fontSize:"20px", 
-                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                    borderColor:"#f4801b",backgroundColor:"#f4801b",color:"white"}}
-                    >
-                         <Link href="/lawyer/registerSubmit">
-                        <a>Submit</a>
-                        </Link>
-                    </Button>
-                    </Form.Item>
-                    </Col>
-                </Row>
                 </Form>
             </div>
-         
-          </div>
+
      </>
     )
   }

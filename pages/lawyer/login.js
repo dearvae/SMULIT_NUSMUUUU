@@ -13,7 +13,7 @@ export default function Login() {
         console.log('Success:', values);
         const result = await AuthApi.authLoginLawyer(values.email, values.password);
           if (result.data.statusCode == 200) {
-              router.push("/") //todo save the returned token and id to session
+              router.push("/lawyer/profile") //todo save the returned token and id to session
               //show login success
           } else {
               //show error message

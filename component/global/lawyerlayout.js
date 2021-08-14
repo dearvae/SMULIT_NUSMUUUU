@@ -26,17 +26,18 @@ export default function MyLayout({ number, children }) {
           <Avatar src="/logo.png" width={400}></Avatar>
         </div>
         <Menu theme="dark" defaultSelectedKeys={[number]} mode="inline">
-          <Menu.Item key="1" icon={<HomeOutlined />}>
-          <Link href="/lawyer/">
-              <a>Home</a>
-            </Link>
-          </Menu.Item>
-          
-          <Menu.Item key="2" icon={<UserOutlined />}>
+        <Menu.Item key="1" icon={<UserOutlined />}>
             <Link href="/lawyer/profile">
               <a>Profile</a>
             </Link>
           </Menu.Item>
+
+          <Menu.Item key="2" icon={<HomeOutlined />}>
+          <Link href="/lawyer/">
+              <a>Service</a>
+            </Link>
+          </Menu.Item>
+      
 
           <Menu.Item key="3" icon={<LogoutOutlined />}>
             <Link href="/lawyer/login">
