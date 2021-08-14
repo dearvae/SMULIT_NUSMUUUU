@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Row, Col, Slider, Select, Input } from "antd";
 import MyCard from "../../component/lawyers/myCard";
 
 export default function Search(props) {
-  let data = props.serviceType;
+  const [language, setLang] = useState("en");
   const { Option } = Select;
-
+  let data = props.serviceType;
 
   function onBlur() {
     console.log("blur");
@@ -19,17 +19,17 @@ export default function Search(props) {
     console.log("search:", val);
   }
 
-  function onChange(value) {
-  }
+  function onChange(value) {}
 
   function onAfterChange(value) {
-    console.log("onAfterChange: ", value);
-    setFilterPrice(value);
+    console.log("price", value);
+    setFilterminPrice(value[0]);
+    setFiltermaxPrice(value[1]);
   }
   function yop(value) {
-    console.log("yop",value)
-    setStartyear(value[0])
-    setEndyear(value[1])
+    console.log("yop", value);
+    setStartyear(value[0]);
+    setEndyear(value[1]);
   }
   const price = {
     0: "$0",
@@ -57,11 +57,11 @@ export default function Search(props) {
   };
 
   const [searchName, setSearchName] = useState("");
-  const [filterPrice, setFilterPrice] = useState("");
+  const [filterminPrice, setFilterminPrice] = useState(0);
+  const [filtermaxPrice, setFiltermaxPrice] = useState(5000);
   const [startyear, setStartyear] = useState(1);
   const [endyear, setEndyear] = useState(40);
   const [filterLanguage, setFilterLanguage] = useState("");
-
   return (
     <div>
       <hr></hr>
@@ -71,7 +71,7 @@ export default function Search(props) {
             <Input
               size="medium"
               bordered={true}
-              placeholder="Search by name"
+              placeholder={language == "en" ? "Search by name " : "按名字搜索"}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
             ></Input>
@@ -80,7 +80,7 @@ export default function Search(props) {
             <Select
               showSearch
               style={{ width: 200 }}
-              placeholder="Select a Language"
+              placeholder={language == "en" ? "Language" : "按语言搜索"}
               optionFilterProp="children"
               onChange={(value) => {
                 setFilterLanguage(value);
@@ -92,16 +92,22 @@ export default function Search(props) {
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
-              <Option value="Mandarin">Mandarin</Option>
-              <Option value="English">English</Option>
-              <Option value="French">French</Option>
+              <Option value="Mandarin">
+                {language == "en" ? "Mandarin" : "华文"}
+              </Option>
+              <Option value="English">
+                {language == "en" ? "English" : "英文"}
+              </Option>
+              <Option value="French">
+                {language == "en" ? "French" : "法语"}
+              </Option>
             </Select>
           </Col>
         </Row>
         <Row>
           <Col span={2}>
             <label style={{ fontSize: 18 }} htmlFor="priceSlider">
-              Price slider
+              {language == "en" ? "Price" : "价格"}
             </label>
           </Col>
           <Col span={6}>
@@ -112,14 +118,13 @@ export default function Search(props) {
               max={5000}
               min={0}
               step={500}
-              defaultValue={[0, 5000]}
               onChange={onChange}
               onAfterChange={onAfterChange}
             />
           </Col>
-          <Col span={2} offset={2}>
+          <Col span={2} offset={4}>
             <label style={{ fontSize: 18 }} htmlFor="priceSlider">
-              Year of practices
+              {language == "en" ? "Year of Practice" : "从业经验"}
             </label>
           </Col>
           <Col span={6}>
@@ -138,15 +143,32 @@ export default function Search(props) {
           </Col>
         </Row>
         <hr></hr>
+        {() => {
+          if (data == undefined) {
+            data = props.serviceType;
+            console.log("data is undefined");
+          }
+        }}
         {data
           .filter((val) => {
-            if (searchName == "" && filterLanguage == "" && startyear==1 && endyear==40) {
+            if (
+              searchName == "" &&
+              filterLanguage == "" &&
+              startyear == 1 &&
+              endyear == 40 &&
+              filterminPrice == 0 &&
+              filtermaxPrice == 5000
+            ) {
               return val;
             } else if (
-              val.lawyerName.toLowerCase().includes(searchName.toLowerCase())&&
-              val.lang.includes(filterLanguage) && val.yearofpra >= startyear && val.yearofpra <= endyear
+              val.lawyerName.toLowerCase().includes(searchName.toLowerCase()) &&
+              val.lang.includes(filterLanguage) &&
+              val.yearofpra >= startyear &&
+              val.yearofpra <= endyear &&
+              val.price >= filterminPrice &&
+              val.price <= filtermaxPrice
             ) {
-              return val; 
+              return val;
             }
           })
           .map((val, key) => {
@@ -159,6 +181,7 @@ export default function Search(props) {
                 hp={val.hp}
                 lang={val.lang}
                 pos={val.pos}
+                price={val.price}
               />
             );
           })}

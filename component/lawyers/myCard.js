@@ -4,6 +4,7 @@ import { useState } from "react";
 const { Meta } = Card;
 
 export default function MyCard(props) {
+  const [language,setLang] = useState("en");
   const gridStyle = {
     width: "30%",
     margin: "30px 50px 0px 100px",
@@ -31,32 +32,32 @@ export default function MyCard(props) {
                   size="middle"
                   onClick={showDrawer}
                 >
-                  More about me
+                  {language == "en" ? "More About Me" : "更多关于我的信息"}
                 </Button>
               <Drawer
-                title={props.lawyerName + "'s Profile"}
+                title={props.lawyerName}
                 placement="right"
                 width={500}
                 closable={false}
                 onClose={onClose}
                 visible={visible}
               >
-                <h3>Personal information</h3>
+                <h3>{language == "en" ? "Personal Information" : "个人信息"}</h3>
                 <Row>
                   <Col span={12}>
-                    <label>Full Name: {props.lawyerName}</label>
+                    <label>{language == "en" ? "Name" : "名字"}: {props.lawyerName}</label>
                   </Col>
                   <Col span={12}>
-                    <label>Contact Number:{props.hp} </label>
+                    <label>{language == "en" ? "Contact Number" : "联系方式"}:{props.hp} </label>
                   </Col>
                 </Row>
                 <br></br>
                 <Row>
                   <Col span={12}>
-                    <label>Spoken: {props.lang}</label>
+                    <label>{language == "en" ? "Spoken Language" : "语言"}:{props.lang}</label>
                   </Col>
                   <Col span={12}>
-                    <label>Position: {props.pos}</label>
+                    <label>{language == "en" ? "Position" :"职位"}:{props.pos}</label>
                   </Col>
                 </Row>
                 <Row>
@@ -81,7 +82,7 @@ export default function MyCard(props) {
               />
             }
             title={props.lawyerName}
-            description={"Contact Number:" + props.hp}
+            description={props.hp}
           />
         </Card>
       </Card.Grid>
