@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React from 'react';
 import AuthApi from "../api/AuthApi"
-import {PageHeader, Button, Form, Input,Checkbox} from 'antd';
+import {PageHeader, Button, Form, Input,Checkbox,message} from 'antd';
 import 'antd/dist/antd.css';
 import { useRouter } from 'next/router'
 
@@ -15,8 +15,10 @@ export default function Login() {
           if (result.data.statusCode == 200) {
               router.push("/lawyer/profile") //todo save the returned token and id to session
               //show login success
+              message.success('Login Success!')
           } else {
               //show error message
+              message.error('email/password is wrong!')
           }
         console.log(result);
       };

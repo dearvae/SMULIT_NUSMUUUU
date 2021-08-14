@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React, { useState } from 'react';
-import { Row, Col, Select, Cascader, Form, Input,Upload, message } from 'antd';
+import { Row, Col, notification, Button, Select, Cascader, Form, Input, DatePicker,PageHeader,Steps,Upload, message } from 'antd';
 import 'antd/dist/antd.css';
-import { InboxOutlined } from '@ant-design/icons';
+import { UserOutlined, SolutionOutlined, LoadingOutlined, SmileOutlined,ApartmentOutlined,InboxOutlined } from '@ant-design/icons';
 
 const { Dragger } = Upload;
 
@@ -26,6 +26,7 @@ const props = {
   },
 };
 
+const { Step } = Steps;
 
 const { Option } = Select;
 const formItemLayout = {
@@ -43,6 +44,18 @@ const formItemLayout = {
     },
     sm: {
       span: 16,
+    },
+  },
+};
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 16,
+      offset: 8,
     },
   },
 };
@@ -77,8 +90,7 @@ const locations = [
 ];
 
 
-export default function RegisterIDVerification(Props) {
-  const { setLawName, setAddress,setPostalCode, setRegion,setPractices} = Props
+export default function RegisterIDVerification() {
 
   const [form] = Form.useForm();
 
@@ -86,62 +98,68 @@ export default function RegisterIDVerification(Props) {
     console.log('Received values of form: ', values);
   };
 
-  const onLawFirmChange = (e) => {
-    const { value } = e.target;
-    console.log(value)
-    setLawName(value)
-  }
+  const prefixSelector = (
+        <Form.Item name="prefix" noStyle>
+          <Select
+            style={{
+              width: 70,
+            }}
+          >
+            <Option value="65">+65</Option>
+            <Option value="60">+60</Option>
+            <Option value="62">+62</Option>
+            <Option value="66">+66</Option>
+            <Option value="84">+84</Option>
+            <Option value="95">+95</Option>
+            <Option value="63">+63</Option>
+          </Select>
+        </Form.Item>
+      );
+      const [autoCompleteResult, setAutoCompleteResult] = useState([]);
 
-  const onAddressChange = (e) => {
-    const { value } = e.target;
-    console.log(value)
-    setAddress(value)
-  }
+      const onWebsiteChange = (value) => {
+        if (!value) {
+          setAutoCompleteResult([]);
+        } else {
+          setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
+        }
+      };
 
-  const onPostalCodeChange = (e) => {
-    const { value } = e.target;
-    console.log(value)
-    setPostalCode(value)
-  }
-
-  const onRegionChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions)
-    setRegion(value, selectedOptions)
-  }
-
-  const onPracticesChange = (e) => {
-    const { value } = e.target;
-    console.log(value)
-    setPractices(value)
-  }
-  
-
-  const [autoCompleteResult, setAutoCompleteResult] = useState([]);
-
-  // const onWebsiteChange = (value) => {
-  //       if (!value) {
-  //         setAutoCompleteResult([]);
-  //       } else {
-  //         setAutoCompleteResult(['.com', '.org', '.net'].map((domain) => `${value}${domain}`));
-  //       }
-  //     };
-
-  //     const websiteOptions = autoCompleteResult.map((website) => ({
-  //       label: website,
-  //       value: website,
-  //     }));
+      const websiteOptions = autoCompleteResult.map((website) => ({
+        label: website,
+        value: website,
+      }));
 
     return (
      <>
+        <PageHeader className="site-page-header"/>
+            <div>
+          <h1 style ={{textAlign:'center',margin:'0.2em', fontSize:"30px", marginBottom:"25px"}}> 
+          Volunteer Lawyer Registration</h1>
+
           <div>
             <Form
                 {...formItemLayout}
                 form={form}
                 name="register"
                 onFinish={onFinish}
+                initialValues={{
+                  location: ['singapore', 'centralsingapore', ],
+                  prefix: '65',
+                }}
                 scrollToFirstError
                 style={{margin:"auto auto"}}
                 >
+                
+                <Row>
+                <Col span={20}  style={{margin:"auto auto", paddingBottom:"20px",textAlign:"center"}}>
+                <Steps>
+                  <Step status="finish" title="Register" icon={<UserOutlined />} />
+                  <Step status="process" title="ID Verification" icon={<LoadingOutlined />} />
+                  <Step status="wait" title="Done" icon={<SmileOutlined />} />
+                </Steps>
+                </Col>
+                </Row>
             
 
                 <Col span="20">
@@ -155,7 +173,7 @@ export default function RegisterIDVerification(Props) {
                       },
                     ]}
                         >
-                <Input onChange={onLawFirmChange} />
+                <Input />
                 </Form.Item>
                 </Col>
 
@@ -170,7 +188,7 @@ export default function RegisterIDVerification(Props) {
                       },
                     ]}
                         >
-                <Input onChange={onAddressChange}/>
+                <Input />
                 </Form.Item>
                 </Col>
 
@@ -185,7 +203,7 @@ export default function RegisterIDVerification(Props) {
                       },
                     ]}
                         >
-                <Input onChange={onPostalCodeChange}/>
+                <Input />
                 </Form.Item>
                 </Col>
 
@@ -202,7 +220,7 @@ export default function RegisterIDVerification(Props) {
                         },
                       ]}
                     >
-                      <Cascader options={locations} onChange={onRegionChange} />
+                      <Cascader options={locations} />
                     </Form.Item>
 
                   </Col>
@@ -211,9 +229,14 @@ export default function RegisterIDVerification(Props) {
                 <Col span="20">
                 <Form.Item 
                     label="Years of Practice"
-                    name="yearsofpractice"
+                    name="position"
+                    rules={[
+                      { 
+                        message: 'Please input your Position!',
+                      },
+                    ]}
                         >
-                <Input onChange={onPracticesChange} />
+                <Input />
                 </Form.Item>
                 </Col>
 
@@ -221,8 +244,13 @@ export default function RegisterIDVerification(Props) {
                 <Col span="20">
                 <Form.Item 
                     label="Practicing Certificate"
-                    name="practicingcertificate">
-
+                    name="practicingcertificate"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Please input your Position!',
+                      },
+                    ]}>
                     <Dragger {...props}>
                     <p className="ant-upload-drag-icon">
                     <InboxOutlined />
@@ -236,9 +264,39 @@ export default function RegisterIDVerification(Props) {
                 </Form.Item>
                 </Col>
                 </Row>
+
+                <Row style={{marginTop:"40px"}}> 
+                <Col span="24">
+                <Form.Item
+                    wrapperCol={{
+                    offset: 10,
+                    span: 6,
+                    }}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'create succesfully!',
+                        },
+                        ]}
+                >
+                    <Button 
+                    htmlType="submit" 
+                    shape="round"
+                    style={{marginTop:"20px", width:"200px", height:"40px",fontSize:"20px", 
+                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+                    borderColor:"#f4801b",backgroundColor:"#f4801b",color:"white"}}
+                    >
+                         <Link href="/lawyer/registerSubmit">
+                        <a>Submit</a>
+                        </Link>
+                    </Button>
+                    </Form.Item>
+                    </Col>
+                </Row>
                 </Form>
             </div>
-
+         
+          </div>
      </>
     )
   }
