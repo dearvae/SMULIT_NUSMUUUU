@@ -7,8 +7,7 @@ import 'antd/dist/antd.css';
 
 const onFinish = async (values) => {
   console.log('Success:', values);
-//   const result = await AuthApi.authRegisterUser("a", "b", "b")
-   const result = await AuthApi.authLoginLawyer(values.email, values.password);
+  const result = await AuthApi.authLoginLawyer(values.email, values.password);
   console.log(result);
 };
 
