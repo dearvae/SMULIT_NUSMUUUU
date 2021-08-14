@@ -1,11 +1,15 @@
 
 import Link from 'next/link'
 import React from 'react';
+import AuthApi from "../api/AuthApi"
 import {PageHeader, Button, Form, Input,Checkbox} from 'antd';
 import 'antd/dist/antd.css';
 
-const onFinish = (values) => {
+const onFinish = async (values) => {
   console.log('Success:', values);
+//   const result = await AuthApi.authRegisterUser("a", "b", "b")
+   const result = await AuthApi.authLoginLawyer(values.email, values.password);
+  console.log(result);
 };
 
 const onFinishFailed = (errorInfo) => {
@@ -84,10 +88,8 @@ export default function Login() {
                     shape="round"
                     style={{marginTop:"20px", width:"200px", height:"40px",fontSize:"20px", 
                     boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                    borderColor:"#349beb",backgroundColor:"#349beb",color:"white"}} htmlType="submit">
-                         <Link href="/lawyer/">
+                    borderColor:"#349beb",backgroundColor:"#349beb",color:"white"}} htmlType="submit">          
                         <a>Login Now</a>
-                        </Link>
                     </Button>
                     
                     <br></br>

@@ -8,7 +8,8 @@ export const AxiosTool = () => {
     }
 
     return Axios.create({
-        baseURL: "https://hg0s14v5qi.execute-api.ap-southeast-1.amazonaws.com/Staging",
+        baseURL: "https://1ob3lxp5q2.execute-api.ap-southeast-1.amazonaws.com/Staging",
+        // baseURL: "https://hg0s14v5qi.execute-api.ap-southeast-1.amazonaws.com/Staging",
         headers: headersConfig
     })
 }

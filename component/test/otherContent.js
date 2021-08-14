@@ -8,6 +8,7 @@ import { PlusOutlined } from '@ant-design/icons';
 export default function OtherContent(props) {
     const router = useRouter();
     const {isValid, setIsValid} = props;
+    const [num, setNum] = useState(1);
 
     function error(message) {
         Modal.confirm({
@@ -18,6 +19,10 @@ export default function OtherContent(props) {
           okText: 'Back to Home Page',
           afterClose: () => { router.push("/") }
         });
+    }
+
+    function onNumChange(value) {
+      setNum(value);
     }
 
     function onSubmit() {
@@ -32,6 +37,28 @@ export default function OtherContent(props) {
         // }
     }
 
+    let input_form_list = [];
+        for (let i = 2; i < num; ++i) {
+          input_form_list.push(
+              <>
+                <Form.Item
+                key={`member_${i}`}
+                label={`Household member ${i}`}
+                name="num"
+                rules={[{ required: true, message: 'This field is required!' }]}
+                >
+                  <InputNumber
+                  id="1"
+                  min={1}
+                  max={10}
+                  onChange={onNumChange}
+                  style={{float:"left", width:"131px"}}
+                  />
+                </Form.Item>
+              </>
+            )
+    }
+
     return (
      <>
     <Form
@@ -41,7 +68,7 @@ export default function OtherContent(props) {
       onFinish={onSubmit}
     >
         <Title level={2}>
-            Please add all your household members' income including yours.
+            Please add all your household members' total income in past 12 months including yours.
         </Title>
 
         <Title level={5}>
@@ -49,11 +76,26 @@ export default function OtherContent(props) {
         <br />
         blood marriage; or adoption.
         <br />
-        Press finish when you have added all household members.
+        Press finish when you have added all.
         </Title>
-        <div>
+
+        <Form.Item
+        label="How many household members do you have?"
+        name="num"
+        rules={[{ required: true, message: 'This field is required!' }]}
+      >
+        <InputNumber
+        id="1"
+        min={1}
+        max={10}
+        onChange={onNumChange}
+        style={{float:"left", width:"131px"}}
+        />
+      </Form.Item>
+
+        {/* <div>
         <Button type="primary" icon={<PlusOutlined />}>Add</Button>
-        </div>
+        </div> */}
 
         number of people, generate 5 input
        
