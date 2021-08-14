@@ -1,14 +1,12 @@
 import MyLayout from '../component/global/layout'
 import { Steps, Modal, Radio, Button, PageHeader } from 'antd';
-import React from 'React'
 import IdentityContent from "../component/test/identityContent"
 import PropertyContent from "../component/test/propertyContent"
 import SavingContent from "../component/test/savingContent"
 import OtherContent from "../component/test/otherContent"
 import Cover from "../component/test/cover"
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/router'
-import { ZhihuCircleFilled } from '@ant-design/icons';
 
 const { Step } = Steps;
 
