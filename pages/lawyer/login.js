@@ -4,18 +4,26 @@ import React from 'react';
 import AuthApi from "../api/AuthApi"
 import {PageHeader, Button, Form, Input,Checkbox} from 'antd';
 import 'antd/dist/antd.css';
-
-const onFinish = async (values) => {
-  console.log('Success:', values);
-  const result = await AuthApi.authLoginLawyer(values.email, values.password);
-  console.log(result);
-};
-
-const onFinishFailed = (errorInfo) => {
-  console.log('Failed:', errorInfo);
-};
+import { useRouter } from 'next/router'
 
 export default function Login() {
+    const router = useRouter();
+
+    const onFinish = async (values) => {
+        console.log('Success:', values);
+        const result = await AuthApi.authLoginLawyer(values.email, values.password);
+          if (result.data.statusCode == 200) {
+              router.push("/") //todo save the returned token and id to session
+              //show login success
+          } else {
+              //show error message
+          }
+        console.log(result);
+      };
+      
+      const onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
+      };
     return (
      <>
       <div>
