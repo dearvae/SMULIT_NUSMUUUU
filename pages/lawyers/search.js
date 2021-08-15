@@ -5,7 +5,10 @@ import MyCard from "../../component/lawyers/myCard";
 export default function Search(props) {
   let language=props.lang
   const { Option } = Select;
-  let data = props.serviceType;
+  let data = [];
+  if (props.serviceType != undefined){
+    data=props.serviceType
+  }
 
   function onBlur() {
     console.log("blur");
